@@ -2,7 +2,7 @@ class Circuit
   attr_accessor :source, :variables, :num_vars, :library, :function, :gates, :cost
   def initialize(source)
     @dist = nil
-    @mct_gate = MCTGate.new
+    @gate = Gate.new
     File.open(source).each do |line|
       case(line)
         when /Used Library: (\w*) \(Gates: (\d*),.*costs: (\d*)\)/ then
