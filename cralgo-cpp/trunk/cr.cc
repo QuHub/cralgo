@@ -2017,7 +2017,6 @@ int main(int argc, char *argv[]){
 	ifstream pla_in_stream;
 	string line;
 
-
 	if (argc < 2) {cout<<"File argument needed"<<endl; exit(0);}
 	pla_in_stream.open(argv[1]);	
 	getline(pla_in_stream,line);
