@@ -1,22 +1,20 @@
 class Circuit
-  attr_accessor :source, :variables, :num_vars, :library, :function, :gates, :cost
+  attr_accessor :source, :variables, :number_of_variables, :library, :function, :gates, :cost, :inputs, :num_gates
   def initialize(source)
     @dist = nil
     @gate = Gate.new
     File.open(source).each do |line|
       case(line)
-        when /Used Library: (\w*) \(Gates: (\d*),.*costs: (\d*)\)/ then
+        when /Used Library: (\w*) \(Gates: (\d*),.*costs: (\d*)\)/i then
           @library = $1
           @num_gates = $2
           @cost = $3
           return if @library != 'MCT'
         when /Function: (.*)/ then @function = $1
-        when /numvars (\d*)/ then  @num_vars = $1
+        when /numvars (\d*)/  then @number_of_variables = $1.to_i
         when /variables (.*)/ then @variables = $1.split(' ')
-        when /inputs (.*)/ then 
-          @inputs = $1.split(' ').reject!{|x| x =~ /^(0|1)$/ }
-        when /^t(\d*)/ then
-          (@gates ||= []).push line.strip.split(' ')
+        when /inputs (.*)/    then @inputs = $1.split(' ').reject{|x| x =~ /^(0|1)$/ }
+        when /^t(\d*)/        then (@gates ||= []).push line.strip.split(' ')
       end
     end
   end
@@ -61,7 +59,7 @@ class Circuit
   end
 
   def ratio
-    @num_vars.to_f / @inputs.size.to_f
+    @number_of_variables.to_f / @inputs.size.to_f
   end
 end
 
