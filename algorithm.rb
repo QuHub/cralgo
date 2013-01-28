@@ -1,4 +1,4 @@
 load 'algorithm/base.rb'
-module Algorithm
 
+module Algorithm
 end
