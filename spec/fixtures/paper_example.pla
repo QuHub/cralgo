@@ -1,0 +1,18 @@
+# Function: 4gt10
+# Checks, if input is greater than 10.
+# This file have been taken from RevLib (www.revlib.org).
+.i 11
+.o 3
+.ilb b c d e f g h i j k
+.ob o1 o2 o3
+1---------- 100
+-1-00001101 100
+-1-00110001 100
+-1-00000001 100
+-1-00001111 010
+-1-00000011 010
+-1-00001100 010
+-1-00000000 010
+-1-00001110 001
+-1-00000010 001
+.e

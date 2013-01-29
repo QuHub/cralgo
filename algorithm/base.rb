@@ -31,7 +31,7 @@ module Algorithm
     end
 
     def encoded_inputs
-      function.inputs.map do |term|
+      @encoded_inputs ||= function.inputs.map do |term|
         term.each_slice(2).map do |pair|
           Digit.create(pair)
         end
@@ -39,11 +39,24 @@ module Algorithm
         .each_with_index {|d, i| d.index = i}
       end
     end
+    
 
-    def indexed_inputs
-      encoded_inputs.each do |term|
-        
+    def group_and_sort(inputs, bit_index)
+      groups = Hash[inputs.group_by {|term| term[bit_index].encoding}.sort]
+      
+      sorted_list ||= []
+      groups.each do |key, group|
+        if group.size > 1
+          sorted_list << group_and_sort(group, bit_index + 2).flatten(1)
+        else
+          sorted_list << group
+        end
       end
+      sorted_list
+    end
+
+    def sorted_inputs
+      group_and_sort(encoded_inputs, 0).flatten(1)
     end
 
     def dump(list)
