@@ -59,6 +59,28 @@ module Algorithm
       group_and_sort(encoded_inputs, 0).flatten(1)
     end
 
+    def activation_table
+      sorted_inputs.transpose.each do |variable|
+        b = 10
+        variable.each do |term_bit|
+          term_bit.activation = '.'
+          term_bit.b = b
+          if term_bit.value == -1
+            term_bit.activation = '.'
+            next
+          end
+          if term_bit.encoding != 10
+            if term_bit.encoding != b
+              b = term_bit.encoding
+              term_bit.activation = term_bit.value  == 1 ? 'c' : 'n'
+            else
+                term_bit.activation = '-'
+            end
+          end
+        end
+      end.transpose
+    end
+
     def dump(list)
       list * ' '
     end

@@ -7,3 +7,4 @@ gem 'rspec'
 gem 'watchr'
 
 gem 'debugger'
+gem 'rb-readline'
