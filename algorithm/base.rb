@@ -60,23 +60,35 @@ module Algorithm
     end
 
     def activation_table
+      term_history = []   # history from top
+
       sorted_inputs.transpose.each do |variable|
         b = 10
-        variable.each do |term_bit|
+        variable_history = nil # history from left
+        variable.each_with_index do |term_bit, index|
           term_bit.activation = '.'
           term_bit.b = b
+
           if term_bit.value == -1
             term_bit.activation = '.'
             next
           end
+
           if term_bit.encoding != 10
             if term_bit.encoding != b
               b = term_bit.encoding
               term_bit.activation = term_bit.value  == 1 ? 'c' : 'n'
-            else
+
+              if term_bit.activation == variable_history && !term_history[index]
                 term_bit.activation = '-'
+              end
+              variable_history = term_bit.activation if %(c n).include?(term_bit.activation)
+            else
+              term_bit.activation = '-'
             end
           end
+
+          term_history[index] =  %w(c n).include?(term_bit.activation) unless term_history[index]
         end
       end.transpose
     end

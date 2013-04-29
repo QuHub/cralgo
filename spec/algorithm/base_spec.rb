@@ -77,9 +77,8 @@ describe Algorithm::Base do
 
   describe '#activation_table' do
     it "builds the activation Table 6 from sorted_inputs" do
-      subject.activation_table.transpose.map(&tuple).each {|x| p x}
-      #subject.activation_table.map(&activation).should == decode(<<-TABLE)
-      p decode(<<-TABLE).map {|x| x.join('')}
+     # subject.activation_table.transpose.map(&tuple).each {|x| p x}
+      subject.activation_table.map(&activation).should == decode(<<-TABLE)
         c . . . . . . . . .
         . c - - - - - - - -
         . . . . . . . . . .
@@ -90,7 +89,7 @@ describe Algorithm::Base do
         . n - - - c - - - n
         . n - - - c - - - n
         . n - c - n - c - n
-        . n c n c n c n c c
+        . n c n c n c n c -
       TABLE
     end
   end
