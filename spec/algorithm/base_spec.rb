@@ -46,30 +46,30 @@ describe Algorithm::Base do
 
     it "creates an indexed list of encoded values according to Table2" do
       subject.encoded_inputs.map(&encoding).should == transform(<<-TABLE)
-         7  9  9  9  9  9  9  9  9  9 
-         7  9  9  9  9  9  9  9  9  9 
-        10  8  8  8  8  8  8  8  8  8 
-        10  8  8  8  8  8  8  8  8  8 
-        10  2  3  2  2  2  2  2  2  2 
-        10  2  3  2  2  2  2  2  2  2 
-        10  3  4  2  3  2  3  2  3  2 
-        10  3  4  2  3  2  3  2  3  2 
-        10  4  2  2  5  3  4  2  5  3 
-        10  4  2  2  5  3  4  2  5  3 
+         7  9  9  9  9  9  9  9  9  9
+         7  9  9  9  9  9  9  9  9  9
+        10  8  8  8  8  8  8  8  8  8
+        10  8  8  8  8  8  8  8  8  8
+        10  2  3  2  2  2  2  2  2  2
+        10  2  3  2  2  2  2  2  2  2
+        10  3  4  2  3  2  3  2  3  2
+        10  3  4  2  3  2  3  2  3  2
+        10  4  2  2  5  3  4  2  5  3
+        10  4  2  2  5  3  4  2  5  3
         -1  1  1  1  1  1  0  0  0  0
       TABLE
 
       subject.sorted_inputs.map(&encoding).should == transform(<<-TABLE)
-         7  9  9  9  9  9  9  9  9  9 
-         7  9  9  9  9  9  9  9  9  9 
-        10  8  8  8  8  8  8  8  8  8 
-        10  8  8  8  8  8  8  8  8  8 
-        10  2  2  2  2  2  2  2  2  3 
-        10  2  2  2  2  2  2  2  2  3 
-        10  2  2  2  2  3  3  3  3  4 
-        10  2  2  2  2  3  3  3  3  4 
-        10  2  2  3  3  4  4  5  5  2 
-        10  2  2  3  3  4  4  5  5  2 
+         7  9  9  9  9  9  9  9  9  9
+         7  9  9  9  9  9  9  9  9  9
+        10  8  8  8  8  8  8  8  8  8
+        10  8  8  8  8  8  8  8  8  8
+        10  2  2  2  2  2  2  2  2  3
+        10  2  2  2  2  2  2  2  2  3
+        10  2  2  2  2  3  3  3  3  4
+        10  2  2  2  2  3  3  3  3  4
+        10  2  2  3  3  4  4  5  5  2
+        10  2  2  3  3  4  4  5  5  2
         -1  0  1  0  1  0  1  0  1  1
       TABLE
     end
@@ -91,6 +91,22 @@ describe Algorithm::Base do
         . n - c - n - c - n
         . n c n c n c n c -
       TABLE
+    end
+  end
+
+  describe '#sorted_outputs' do
+    it 'sorts the output according to the new sorting of the input minterms' do
+      subject.sorted_outputs.should == [
+        [1, 0, 0], [0, 1, 0], [1, 0, 0], [0, 0, 1], [0, 1, 0],
+        [0, 1, 0], [1, 0, 0], [0, 0, 1], [0, 1, 0], [1, 0, 0]
+      ]
+    end
+  end
+
+  describe '#reduced_control_lines' do
+    it 'sorts the output according to the new sorting of the input minterms' do
+      subject.reduced_control_lines.should == [
+      ]
     end
   end
 end

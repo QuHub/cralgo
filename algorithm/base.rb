@@ -15,9 +15,9 @@ class Digit < OpenStruct
     [-1]    => [-1],
   }
 
-  def self.create(pair)
+  def self.create(pair, index)
     pair.zip(EncodingMap[pair]).map do |value, encoding|
-      new(:value => value, :encoding =>  encoding)
+      new(:value => value, :encoding =>  encoding, :index => index)
     end
   end
 end
@@ -31,23 +31,22 @@ module Algorithm
     end
 
     def encoded_inputs
-      @encoded_inputs ||= function.inputs.map do |term|
+      @encoded_inputs ||= function.inputs.each_with_index.map do |term, index|
         term.each_slice(2).map do |pair|
-          Digit.create(pair)
+          Digit.create(pair, index)
         end
         .flatten
-        .each_with_index {|d, i| d.index = i}
       end
     end
-    
 
-    def group_and_sort(inputs, bit_index)
+
+    def group_and_sort_inputs(inputs, bit_index)
       groups = Hash[inputs.group_by {|term| term[bit_index].encoding}.sort]
-      
+
       sorted_list ||= []
       groups.each do |key, group|
         if group.size > 1
-          sorted_list << group_and_sort(group, bit_index + 2).flatten(1)
+          sorted_list << group_and_sort_inputs(group, bit_index + 2).flatten(1)
         else
           sorted_list << group
         end
@@ -56,7 +55,7 @@ module Algorithm
     end
 
     def sorted_inputs
-      group_and_sort(encoded_inputs, 0).flatten(1)
+      group_and_sort_inputs(encoded_inputs, 0).flatten(1)
     end
 
     def activation_table
@@ -91,6 +90,49 @@ module Algorithm
           term_history[index] =  %w(c n).include?(term_bit.activation) unless term_history[index]
         end
       end.transpose
+    end
+
+    def sorted_outputs
+      new_input_order = activation_table.map(&:first).flatten.map(&:index)
+      new_input_order.map do |index|
+        function.outputs[index]
+      end
+    end
+
+    def map
+      hash = {
+        'ncnn' => ['n...'],
+        'nccc' => ['.c..'],
+        'nncc' => ['....', 'n...', '.n..', '....'],
+        'ccnn' => ['....', 'n...', '.n..', '....'],
+        'nccn' => ['c...', '.c..'],
+        'cnnc' => ['c...', '.c..'],
+      }
+
+      hash.dup.each do |k,v|
+        (0..k.length-1).each do |index|
+          n = k.dup
+          n[index] = '-'
+          if !hash[n] || hash[n].length > v.length
+            hash[n] = v
+          end
+        end
+      end
+      hash
+    end
+
+    def reduce_inputs(mt1, mt2)
+      pp map
+      (0..mt1.length-2).each do |index|
+        key = (mt1[index,2] + mt2[index,2]).flatten.map(&:activation).join
+      end
+    end
+
+    def reduced_control_lines
+      (0..sorted_outputs.length-2).each do |index|
+        next unless sorted_outputs[index] == sorted_outputs[index+1]
+        reduce_inputs(*sorted_inputs[index, 2])
+      end
     end
 
     def dump(list)
