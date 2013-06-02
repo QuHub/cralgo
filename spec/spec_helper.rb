@@ -18,3 +18,13 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = 'random'
 end
+
+def minterms(*args)
+  args.map do |term|
+    term.split('')
+  end
+end
+
+def decode(table)
+  table.split("\n").map{|x| x.split(" ")}.transpose
+end
