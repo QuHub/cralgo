@@ -8,28 +8,40 @@ module Algorithm
     end
 
     def cascade
-      stretch
+      stretch(input)
       combine
       pad
     end
 
-    def stretch
+    # itr:     input(n) , input(n+1)
+    # 1:    '..c.ccc....', '..c.c+'
+    # 2:         'Ccc....','.....cc+'
+    # 3:          'Cc....','.......cc....'
+
+    def stretch(input, prefix=[])
       gate = []
-      input.each do |bit|
-        if bit =~ /c|n/
-          if !(gate & %w(c n)).empty?
-            gate += [bit, '+']
-            gates << gate
-            gate = ['.'] * (gate.size - 1)
-            gate << 'c'
-          else
-            gate << bit
-          end
+      count = 0
+      if input.count {|e| e =~ /c|n/ } <= 2
+        gates << prefix + input
+        return gates
+      end
+
+      input.each.with_index do |bit, index|
+        gate << bit and next unless bit =~ /c|n/
+
+        if count >= 2 && !(gate & %w(c n)).empty?
+          remaining = input[index..-1]
+          remaining.unshift('c')
+          gate << '+'
+          gates << prefix + gate
+          stretch(remaining, prefix + ['.'] * (gate.size - 1))
+          return gates
         else
-          gate << bit
+          count += 1
+          gate.push(bit)
         end
       end
-      gates << gate
+      gates << prefix + gate
     end
 
     def combine
