@@ -30,8 +30,14 @@ describe Algorithm::Minterm do
 		# The number of Toffoli gates is #of controls - 1 , for controls > 1
 		it_should_behave_like "stretched", 'c..', 'c..'
   	it_should_behave_like "stretched", 'cc.', 'cc.'
+  	it_should_behave_like "stretched", 'cn.', 'cn.'
+  	it_should_behave_like "stretched", 'nc.', 'nc.'
 		it_should_behave_like "stretched", 'ccc.', 'cc+', '..cc.'
+		it_should_behave_like "stretched", 'cnc.', 'cn+', '..cc.'
+		it_should_behave_like "stretched", 'cnn.', 'cn+', '..cn.'
 		it_should_behave_like "stretched", 'cc.c.', 'cc.+', '...cc.'
+		it_should_behave_like "stretched", 'cn.c.', 'cn.+', '...cc.'
+		it_should_behave_like "stretched", 'cn.n.', 'cn.+', '...cn.'
 		it_should_behave_like "stretched", 'cc.cc.', 'cc.+', '...cc+', '.....cc.'
 		it_should_behave_like "stretched", 'cc.ccccc.',
 			'cc.+', '...cc+', '.....cc+', '.......cc+', '.........cc+', '...........cc.'
