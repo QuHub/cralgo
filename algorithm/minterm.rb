@@ -35,6 +35,13 @@ module Algorithm
           gate << '+'
           gates << prefix + gate
           stretch(remaining, prefix + ['.'] * (gate.size - 1))
+
+          # pad gates at the end with '.'
+          longest = gates.last.length
+          gates.each.with_index do |gate, index|
+            missing = longest - gate.length
+            gates[index] = gate + (['.'] * missing)
+          end
           return gates
         else
           count += 1
