@@ -19,6 +19,10 @@ RSpec.configure do |config|
   config.order = 'random'
 end
 
+def vertical(args)
+  args.map{|m| m.split('')}.transpose.map {|z| z.join(' ')}.join("\n")
+end
+
 def minterms(*args)
   args.map do |term|
     term.split('')

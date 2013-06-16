@@ -1,14 +1,14 @@
 module Algorithm
   class Minterm
     attr_accessor :input, :output, :gates
-    def initialize(input, output)
+    def initialize(input, output, gates=nil)
       self.input = input
       self.output = output
-      self.gates = []
+      self.gates = gates || Grid.new(0, input.length, '.')
     end
 
     def cascade
-      stretch(input)
+      stretch
       combine
       pad
     end
@@ -18,37 +18,39 @@ module Algorithm
     # 2:         'Ccc....','.....cc+'
     # 3:          'Cc....','.......cc....'
 
-    def stretch(input, prefix=[])
-      gate = []
+    def stretch(minterm=input)
       count = 0
-      if input.count {|e| e =~ /c|n/ } <= 2
-        gates << prefix + input
+
+      if minterm.count {|e| e =~ /c|n/ } <= 2
+        gates.insert_col(-1, minterm)
         return gates
       end
 
-      input.each.with_index do |bit, index|
-        gate << bit and next unless bit =~ /c|n/
+      gate= Array.new(gates.height, '.')
+      minterm.each.with_index do |bit, index|
+        if bit =~ /c|n/
+          if count >= 2 && !(gate & %w(c n)).empty?
+            gate.insert(index, '+')
 
-        if count >= 2 && !(gate & %w(c n)).empty?
-          remaining = input[index..-1]
-          remaining.unshift('c')
-          gate << '+'
-          gates << prefix + gate
-          stretch(remaining, prefix + ['.'] * (gate.size - 1))
+            # insert a new anciallary qubit
+            #   ccc.
+            # 1 cc+..
+            # 2 ..cc.
+            gates.insert_row(index)
+            gates.insert_col(-1, gate)
 
-          # pad gates at the end with '.'
-          longest = gates.last.length
-          gates.each.with_index do |gate, index|
-            missing = longest - gate.length
-            gates[index] = gate + (['.'] * missing)
+            remaining = ['.'] * index + ['c'] +  minterm[index..-1]
+
+            stretch(remaining)
+
+            return gates
+          else
+            count += 1
+            gate[index] = bit
           end
-          return gates
-        else
-          count += 1
-          gate.push(bit)
         end
       end
-      gates << prefix + gate
+      gates
     end
 
     def combine

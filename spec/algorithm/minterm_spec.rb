@@ -14,23 +14,23 @@ describe Algorithm::Minterm do
 		it_should_behave_like "a cascade", 'cn.', '100', 'cn.+..'
 		it_should_behave_like "a cascade", 'nc.', '100', 'nc.+..'
 
-		it_should_behave_like "a cascade", 'c.c.', '100', 'c.c.+..'
-		it_should_behave_like "a cascade", 'c.n.', '100', 'c.n.+..'
-		it_should_behave_like "a cascade", 'c..c', '100', 'c..c+..'
+		it_should_behave_like "a cascade", 'c.c.', '100', 'c...c...+..'
+		it_should_behave_like "a cascade", 'c.n.', '100', 'c...n...+..'
+		it_should_behave_like "a cascade", 'c..c', '100', 'c.....c.+..'
 		it_should_behave_like "a cascade", 'cc.ccccc.', '100',
-			'cc.+.............',
-      '...cc+...........',
-      '.....cc+.........',
-      '.......cc+.......',
-      '.........cc+.....',
-      '...........cc.+..'
+      'c.c..+...............',
+      '.....cc+.............',
+      '.......cc+...........',
+      '.........cc+.........',
+      '...........cc+.......',
+      '.............cc...+..'
   end
 
 	describe '#stretch', :dev => true do
 		shared_examples_for "stretched" do |input, *cascade|
-			subject{described_class.new(nil, nil)}
+			subject{described_class.new(input.split(''), nil)}
 			it "stretches the gate into as many Toffoli gates as needed" do
-				subject.stretch(input.split('')).should == cascade.map{|x| x.split('')}
+				subject.stretch.inspect.should == vertical(cascade)
 			end
 		end
 
@@ -42,15 +42,21 @@ describe Algorithm::Minterm do
 		it_should_behave_like "stretched", 'ccc.', 'cc+..', '..cc.'
 		it_should_behave_like "stretched", 'cnc.', 'cn+..', '..cc.'
 		it_should_behave_like "stretched", 'cnn.', 'cn+..', '..cn.'
-		it_should_behave_like "stretched", 'cc.c.', 'cc.+..', '...cc.'
-		it_should_behave_like "stretched", 'cn.c.', 'cn.+..', '...cc.'
-		it_should_behave_like "stretched", 'cn.n.', 'cn.+..', '...cn.'
+		it_should_behave_like "stretched", 'cc.c.',
+      'cc.+..',
+      '...cc.'
+		it_should_behave_like "stretched", 'cn.c.',
+      'cn.+..',
+      '...cc.'
+		it_should_behave_like "stretched", 'cn.n.',
+      'cn.+..',
+      '...cn.'
 		it_should_behave_like "stretched", 'cc.cc.',
       'cc.+....',
       '...cc+..',
       '.....cc.'
 		it_should_behave_like "stretched", 'cc.ccccc.',
-			'cc.+..........',
+      'cc.+..........',
       '...cc+........',
       '.....cc+......',
       '.......cc+....',

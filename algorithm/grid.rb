@@ -13,14 +13,23 @@ module Algorithm
     def insert_row(at, initializer=nil)
       initializer ||= @initializer
       @grid.insert(at, Array.new(width, initializer))
+      @height +=  1
       self
     end
 
     def insert_col(at, initializer=nil)
       initializer ||= @initializer
-      @grid.each do |row|
-        row.insert(at, initializer)
+      initializer = case initializer
+      when String then [initializer] * height
+      when Array then
+        raise ArgumentError if initializer.length != @height
+        initializer
       end
+
+      @grid.each.with_index do |row, index|
+        row.insert(at, initializer[index])
+      end
+      @width += 1
       self
     end
 
@@ -29,7 +38,7 @@ module Algorithm
     end
 
     def inspect
-      grid.map {|x| x.join('')}.join("\n")
+      grid.map {|x| x.join(' ')}.join("\n")
     end
   end
 end

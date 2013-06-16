@@ -23,6 +23,8 @@ describe Algorithm::Grid do
         ...
         ...
       TEXT
+      subject.width.should == 3
+      subject.height.should == 5
     end
 
     it 'adds a new row at the specified location using passed in initializer' do
@@ -33,6 +35,8 @@ describe Algorithm::Grid do
         ...
         ...
       TEXT
+      subject.width.should == 3
+      subject.height.should == 5
     end
   end
 
@@ -45,6 +49,8 @@ describe Algorithm::Grid do
         ..-.
         ..-.
       TEXT
+      subject.width.should == 4
+      subject.height.should == 4
     end
 
     it 'adds a new row at the specified location using passed in initializer' do
@@ -54,6 +60,31 @@ describe Algorithm::Grid do
         ..*.
         ..*.
       TEXT
+      subject.width.should == 4
+      subject.height.should == 4
+    end
+
+    it 'adds a new row at the specified location using passed in array' do
+      subject.insert_col(2, ['1', '2', '3', '4']).inspect.should == strip_leading(<<-TEXT)
+        ..1.
+        ..2.
+        ..3.
+        ..4.
+      TEXT
+      subject.width.should == 4
+      subject.height.should == 4
+    end
+
+    it 'raises error if the input array is less in height' do
+      expect {
+        subject.insert_col(2, ['1', '2', '3'])
+      }.to raise_error ArgumentError
+    end
+
+    it 'raises error if the input array is more in height' do
+      expect {
+        subject.insert_col(2, ['1', '2', '3', '4', '5'])
+      }.to raise_error ArgumentError
     end
   end
 end
