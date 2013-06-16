@@ -28,3 +28,9 @@ end
 def decode(table)
   table.split("\n").map{|x| x.split(" ")}.transpose
 end
+
+def strip_leading(text)
+  text.split("\n").map do |line|
+    line.strip
+  end.join("\n")
+end
