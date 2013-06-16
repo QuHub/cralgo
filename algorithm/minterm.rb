@@ -9,8 +9,7 @@ module Algorithm
 
     def cascade
       stretch
-      combine
-      pad
+      combine_with_output
     end
 
     # itr:     input(n) , input(n+1)
@@ -53,13 +52,15 @@ module Algorithm
       gates
     end
 
-    def combine
-      nop_output = ['.'] * output.length
-      gates[0..-1].map do |gate|
-        gate += nop_output
+    def combine_with_output
+      offset = gates.height
+      output.length.times do |_|
+        gates.insert_row(-1)
       end
 
-      gates[-1] +=  render_to_gates(output)
+      output.each.with_index do |bit, index|
+        gates.grid[offset+index][-1] = map[bit]
+      end
       gates
     end
 
@@ -69,19 +70,6 @@ module Algorithm
         'c' => 'c', 'n' => 'n',
         '-' => '-', '.' => '.'
       }
-    end
-
-    def render_to_gates(minterm)
-      minterm.map do |bit|
-        map[bit]
-      end
-    end
-
-    def pad
-      width = gates.map(&:length).max
-      gates.map do |gate|
-        gate += ['.'] * (width - gate.length)
-      end
     end
   end
 end

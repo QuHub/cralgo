@@ -5,7 +5,7 @@ describe Algorithm::Minterm do
 		shared_examples_for "a cascade" do |input, output, *cascade|
 			it "expand activation minterm to Toffoli gates" do
 				klass = described_class.new(input.split(''), output.split(''))
-				klass.cascade.should == cascade.map{|x| x.split('')}
+				klass.cascade.inspect.should == vertical(cascade)
 			end
 		end
 
@@ -14,16 +14,16 @@ describe Algorithm::Minterm do
 		it_should_behave_like "a cascade", 'cn.', '100', 'cn.+..'
 		it_should_behave_like "a cascade", 'nc.', '100', 'nc.+..'
 
-		it_should_behave_like "a cascade", 'c.c.', '100', 'c...c...+..'
-		it_should_behave_like "a cascade", 'c.n.', '100', 'c...n...+..'
-		it_should_behave_like "a cascade", 'c..c', '100', 'c.....c.+..'
+		it_should_behave_like "a cascade", 'c.c.', '100', 'c.c.+..'
+		it_should_behave_like "a cascade", 'c.n.', '100', 'c.n.+..'
+		it_should_behave_like "a cascade", 'c..c', '100', 'c..c+..'
 		it_should_behave_like "a cascade", 'cc.ccccc.', '100',
-      'c.c..+...............',
-      '.....cc+.............',
-      '.......cc+...........',
-      '.........cc+.........',
-      '...........cc+.......',
-      '.............cc...+..'
+      'cc.+.............',
+      '...cc+...........',
+      '.....cc+.........',
+      '.......cc+.......',
+      '.........cc+.....',
+      '...........cc.+..'
   end
 
 	describe '#stretch', :dev => true do
