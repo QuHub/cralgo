@@ -12,7 +12,14 @@ module Algorithm
 
     def insert_row(at, initializer=nil)
       initializer ||= @initializer
-      @grid.insert(at, Array.new(width, initializer))
+      initializer = case initializer
+      when String then width.times.map{initializer.dup}
+      when Array then
+        raise ArgumentError if initializer.width != @width
+        initializer
+      end
+
+      @grid.insert(at, initializer)
       @height +=  1
       self
     end
@@ -20,7 +27,7 @@ module Algorithm
     def insert_col(at, initializer=nil)
       initializer ||= @initializer
       initializer = case initializer
-      when String then [initializer] * height
+      when String then height.times.map{initializer.dup}
       when Array then
         raise ArgumentError if initializer.length != @height
         initializer
@@ -31,6 +38,18 @@ module Algorithm
       end
       @width += 1
       self
+    end
+
+    def row(index)
+      @grid[index]
+    end
+
+    def col(index)
+      [].tap do |col|
+        height.times.each do |i|
+          col << @grid[i][index]
+        end
+      end
     end
 
     def initializer=(value)

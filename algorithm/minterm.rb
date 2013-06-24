@@ -1,15 +1,15 @@
 module Algorithm
   class Minterm
-    attr_accessor :input, :output, :gates
+    attr_accessor :input, :output, :gates, :added_qubit_index
     def initialize(input, output, gates=nil)
       self.input = input
       self.output = output
       self.gates = gates || Grid.new(0, input.length, '.')
+      self.added_qubit_index = []
     end
 
     def cascade
       stretch
-      combine_with_output
     end
 
     # itr:     input(n) , input(n+1)
@@ -36,6 +36,7 @@ module Algorithm
             # 1 cc+..
             # 2 ..cc.
             gates.insert_row(index)
+            added_qubit_index << index
             gates.insert_col(-1, gate)
 
             remaining = ['.'] * index + ['c'] +  minterm[index..-1]
@@ -50,26 +51,6 @@ module Algorithm
         end
       end
       gates
-    end
-
-    def combine_with_output
-      offset = gates.height
-      output.length.times do |_|
-        gates.insert_row(-1)
-      end
-
-      output.each.with_index do |bit, index|
-        gates.grid[offset+index][-1] = map[bit]
-      end
-      gates
-    end
-
-    def map
-      @map = {
-        '1' => '+', '0' => '.',
-        'c' => 'c', 'n' => 'n',
-        '-' => '-', '.' => '.'
-      }
     end
   end
 end
