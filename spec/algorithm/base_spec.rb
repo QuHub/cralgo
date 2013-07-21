@@ -89,7 +89,7 @@ describe Algorithm::Base do
         . n - - - c - - - n
         . n - - - c - - - n
         . n - c - n - c - n
-        . n c n c n c n c -
+        . n c n c n c n c c
       TABLE
     end
   end
@@ -99,13 +99,6 @@ describe Algorithm::Base do
       subject.sorted_outputs.should == [
         [1, 0, 0], [0, 1, 0], [1, 0, 0], [0, 0, 1], [0, 1, 0],
         [0, 1, 0], [1, 0, 0], [0, 0, 1], [0, 1, 0], [1, 0, 0]
-      ]
-    end
-  end
-
-  describe '#reduced_control_lines' do
-    it 'sorts the output according to the new sorting of the input minterms' do
-      subject.reduced_control_lines.should == [
       ]
     end
   end

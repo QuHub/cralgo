@@ -74,7 +74,7 @@ module Algorithm
           end
 
           if term_bit.encoding != 10
-            if term_bit.encoding != b
+            if term_bit.encoding != b || term_history[index]
               b = term_bit.encoding
               term_bit.activation = term_bit.value  == 1 ? 'c' : 'n'
 
@@ -128,12 +128,12 @@ module Algorithm
       end
     end
 
-    def reduced_control_lines
-      (0..sorted_outputs.length-2).each do |index|
-        next unless sorted_outputs[index] == sorted_outputs[index+1]
-        reduce_inputs(*sorted_inputs[index, 2])
-      end
-    end
+    #def reduced_control_lines
+      #(0..sorted_outputs.length-2).each do |index|
+        #next unless sorted_outputs[index] == sorted_outputs[index+1]
+        #reduce_inputs(*sorted_inputs[index, 2])
+      #end
+    #end
 
     def dump(list)
       list * ' '
