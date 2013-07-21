@@ -15,7 +15,7 @@ module Algorithm
       initializer = case initializer
       when String then width.times.map{initializer.dup}
       when Array then
-        raise ArgumentError if initializer.width != @width
+        raise ArgumentError if initializer.length != @width
         initializer
       end
 
@@ -42,6 +42,16 @@ module Algorithm
 
     def row(index)
       @grid[index]
+    end
+
+    def replace_row(index, row)
+      @grid[index] = row
+    end
+
+    def replace_col(index, col)
+      height.times.each do |i|
+        @grid[i][index] = col[i]
+      end
     end
 
     def col(index)

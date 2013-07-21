@@ -1,10 +1,11 @@
 module Algorithm
   class Minterm
-    attr_accessor :input, :output, :gates, :added_qubit_index
-    def initialize(input, output, gates=nil)
+    attr_accessor :input, :output, :gates, :added_qubit_index, :source_grid
+    def initialize(input, output, source_grid, gates=nil)
       self.input = input
       self.output = output
       self.gates = gates || Grid.new(0, input.length, '.')
+      self.source_grid = source_grid
       self.added_qubit_index = []
     end
 
@@ -18,6 +19,7 @@ module Algorithm
     # 3:          'Cc....','.......cc....'
 
     def stretch(minterm=input)
+      puts '*****'
       count = 0
 
       if minterm.count {|e| e =~ /c|n/ } <= 2
@@ -28,6 +30,8 @@ module Algorithm
       gate= Array.new(gates.height, '.')
       minterm.each.with_index do |bit, index|
         if bit =~ /c|n/
+          puts "[%s: %s]" % [index, bit]
+          puts @gates.inspect
           if count >= 2 && !(gate & %w(c n)).empty?
             gate.insert(index, '+')
 
