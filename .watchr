@@ -23,8 +23,13 @@ class Specs
     end
 
     def run_single_spec *spec
-      tags = "--tag #{ARGV[1]}" if ARGV[1]
-      spec = spec.join(' ')
+      if ARGV[1].to_i > 0
+        tags = ''
+        spec = spec.first + ":#{ARGV[1]}"
+      else
+        tags = "--tag #{ARGV[1]}" if ARGV[1]
+        spec = spec.join(' ')
+      end
       run "bundle exec rspec  #{spec} --order rand #{tags}"
     end
 
