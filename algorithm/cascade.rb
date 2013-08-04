@@ -5,95 +5,80 @@ module Algorithm
       raise "Input and Output size mismatch" unless inputs.length == outputs.length
       self.inputs = inputs
       self.outputs = outputs
-      self.gate_output_column_index = {}
-    end
-
-    def with_top_control_line(input)
-      col = input.join
-#      col.sub!(/\-(.*)\.(.*)[c|n]/) {|x| x.tr('.', '-')}
-      col.sub!(/(\-)(c|n)/, 'c\2')
-      col.split('')
     end
 
     def grid
       @grid ||= begin
-        grid = Grid.new(0, inputs[0].length, '.')
-        inputs.each do |input|
+        grid = Grid.new(0, combined[0].length, '.')
+        combined.each do |input|
           grid.insert_col(-1, input)
         end
         grid
       end
     end
 
+    def combined
+      @combined ||= begin
+        inputs.map.with_index do |input, index|
+          input = input.join('').sub('-c','Cc').sub('-n','Cn').split('')
+          input + outputs[index]
+        end
+      end
+    end
+
+    #  Algorithm:
+    #   When the third c|n is detected at (y,x)
+    #    Insert ancilla row at (x), and column at (y+1)
+    #    Insert + at (y,x), and c at (y,x+1)
+    #    Move bits after i to new col
+    #    Clear bits after i in current col
+    #    Move 'C' from previous row to new ancilla row
     def render
-      @gates = nil
-      inputs.each.with_index do |_, index|
-      #  puts @gates.inspect
+      x = 0
+      while(x < grid.width) do
+        minterm = grid.col(x)
+        x += 1
+        next if minterm.count {|e| e =~ /c|n/i  } <= 2
+        process_column(x-1)
+      end
 
-        input = grid.col(index)
-        output = outputs[index]
-        minterm = Minterm.new(with_top_control_line(input), output, grid, @gates)
-        puts minterm.gates.inspect
-        @gates = minterm.stretch
-        gate_output_column_index[index] = @gates.width
+      #puts grid.inspect
+      # now move the 'C' down to the added ancilla bit
+      (0..grid.width-1).each do |x|
+        minterm = grid.col(x).join('')
+        minterm = minterm.sub('C.', '.c').tr('01-','.+.').downcase.split('')
+        grid.replace_col(x,minterm)
+      end
+      grid
+    end
 
-        # update the input grid with the new qubits inserted as part of previous
-        # expansion steps.
-        minterm.added_qubit_index.each do |i|
-          duplicate = grid.row(i).dup.map {|x| x.tr('cn', '*') }
-          grid.insert_row(i, duplicate)
+    def process_column(x)
+      count = 0
+      minterm = grid.col(x)
+
+      minterm.each.with_index do |bit, y|
+        if bit =~ /c|n/i
+          if count >= 2
+            grid.insert_row(y)
+            grid.row(y)[x] = '+'
+            grid.insert_col(x+1)
+            grid.row(y)[x+1] = 'c'
+
+            # copy the remaining bits to the newly added gate
+            (y+1..grid.height-1).each do |i|
+              grid.row(i)[x+1] = grid.row(i)[x]
+              grid.row(i)[x] = '.'
+            end
+            return
+          else
+            count += 1
+          end
         end
       end
-      correct_dont_cares
-      combine_with_outputs
-      @gates
-    end
-
-    def correct_dont_cares
-      (0..@gates.height-1).each do |index|
-        row = @gates.row(index).join
-        row.sub!(/[n|c](.*)\-(.*)/) {|x| x.tr('.', '-')}
-        @gates.replace_row(index, row.split(''))
-      end
-
-      #(0..@gates.width-1).each do |index|
-        #col = @gates.col(index).join
-        #col.sub!(/^((.)(\-|\.)+)[n|c]/) {|x| x.tr('.', '-')}
-        #@gates.replace_col(index, col.split(''))
-      #end
-    end
-
-    def combine_with_outputs
-      offset = @gates.height
-      outputs[0].length.times do |_|
-        @gates.insert_row(-1, '.')
-      end
-
-      outputs.each.with_index do |output, x|
-        output.each.with_index do |bit, y|
-          @gates.grid[offset+y][gate_output_column_index[x] - 1] = map[bit]
-        end
-      end
-      gates
-    end
-
-    def map
-      @map = {
-        '1' => '+', '0' => '.',
-        'c' => 'c', 'n' => 'n',
-        '-' => '-', '.' => '.'
-      }
     end
   end
 end
 
-
-__END__
-Insert ancilla row before, and column after
-Insert + and c
-Move bits after i to new col
-Clear bits after i in current col
-Move 'C' from previous row to new ancilla row
 
 
 
