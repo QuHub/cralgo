@@ -42,13 +42,13 @@ module Algorithm
         process_column(x-1)
       end
 
-      #puts grid.inspect
       # now move the 'C' down to the added ancilla bit
       (0..grid.width-1).each do |x|
         minterm = grid.col(x).join('')
-        minterm = minterm.sub('C.', '.c').tr('01-','.+.').downcase.split('')
+        minterm = minterm.sub('Ca', '.c').tr('10a-','+.').downcase.split('')
         grid.replace_col(x,minterm)
       end
+
       grid
     end
 
@@ -59,7 +59,11 @@ module Algorithm
       minterm.each.with_index do |bit, y|
         if bit =~ /c|n/i
           if count >= 2
-            grid.insert_row(y)
+            if grid.row(y-1)[x] != 'a'
+              grid.insert_row(y, 'a')
+            else
+              y = y - 1
+            end
             grid.row(y)[x] = '+'
             grid.insert_col(x+1)
             grid.row(y)[x+1] = 'c'
