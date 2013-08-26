@@ -20,6 +20,10 @@ RSpec.configure do |config|
   config.order = 'random'
 end
 
+def joinit
+  lambda {|arr| puts arr.join(' ')}
+end
+
 def vertical(args)
   args.map{|m| m.split('')}.transpose.map {|z| z.join(' ')}.join("\n")
 end
