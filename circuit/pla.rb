@@ -7,7 +7,7 @@ module Circuit
       @dist = nil
       @gate = Gate.new
       File.open(source).each do |line|
-        case(line)
+        case(line.strip)
           when /Function: (.*)/ then self.function = $1
           when /\.i\s+(.*)/    then self.number_inputs = $1.to_i
           when /\.o\s+(.*)/    then self.number_outputs = $1.to_i
