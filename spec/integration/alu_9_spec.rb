@@ -19,5 +19,14 @@ describe 'alu_9' do
         n c n c c n c n c n c n n c c n
       TABLE
     end
+
+    let(:inputs) {algorithm.activation_table.map(&activation)}
+    let(:outputs) {function.outputs}
+    let(:cascade) {Algorithm::Cascade.new(inputs, outputs)}
+
+    it 'renders the quantum cascade' do
+      cascade.render.inspect.should == strip_leading(<<-TXT)
+      TXT
+    end
   end
 end

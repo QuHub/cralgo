@@ -16,7 +16,10 @@ describe Algorithm::Cascade do
         1 0 0 0
       TXT
 
+      p inputs
+      p outputs
       subject = described_class.new inputs, outputs
+
       # NOTE: This is a temporary solution and it does not represent the
       # actual layout; the intersection points above the c|n should really
       # have the don't care symbol '-'.

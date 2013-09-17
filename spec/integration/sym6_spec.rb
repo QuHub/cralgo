@@ -19,5 +19,25 @@ describe 'Sym6' do
         c c n c c n c n c n c c n c n c n c n c n c n c n c n c n c n c n c n c n c n n c n c n c n n c n n
       TABLE
     end
+
+    let(:inputs) {algorithm.activation_table.map(&activation)}
+    let(:outputs) {function.outputs}
+    let(:cascade) {Algorithm::Cascade.new(inputs, outputs)}
+
+    it 'renders the quantum cascade' do
+      cascade.render.inspect.should == strip_leading(<<-TXT)
+        n . . . . . . . . . . . . . . . . . . . . . . . . c . . . . . . . . . . . . . . . . . . . . . . . . . . . . c . . . . . . . . . . . . . . . . . . . . . . . . . . . . c . . . . . . . . . . . . . . . . . . . . . . . .
+        n . . . . . . . . . . . . . . . . . . . . . . . . c . . . . . . . . . . . . . . . . . . . . . . . . . . . . n . . . . . . . . . . . . . . . . . . . . . . . . . . . . c . . . . . . . . . . . . . . . . . . . . . . . .
+        + c . . . . . . . . . c . . . . . . . . . . . . . + c . . . . . . . . . . . . . c . . . . . . . . . . . . . + c . . . . . . . . . . . . . c . . . . . . . . . . . . . + c . . . . . . . . . . . . . c . . . . . . . . .
+        . n . . . . . . . . . c . . . . . . . . . . . . . . n . . . . . . . . . . . . . c . . . . . . . . . . . . . . n . . . . . . . . . . . . . c . . . . . . . . . . . . . . n . . . . . . . . . . . . . c . . . . . . . . .
+        . + c . . c . . . . . + c . . . . . c . . . . . . . + c . . . . . c . . . . . . + c . . . . . . c . . . . . . + c . . . . . c . . . . . . + c . . . . . . c . . . . . . + c . . . . . . c . . . . . + c . . . . . c . .
+        . . n . . c . . . . . . n . . . . . c . . . . . . . . n . . . . . c . . . . . . . n . . . . . . c . . . . . . . n . . . . . c . . . . . . . n . . . . . . c . . . . . . . n . . . . . . c . . . . . . n . . . . . c . .
+        . . + c . + c . c . . . + c . c . . + c . . c . . . . + c . c . . + c . . c . . . + c . . c . . + c . . c . . . + c . c . . + c . . c . . . + c . . c . . + c . . c . . . + c . . c . . + c . . c . . + c . . c . + c .
+        . . . c . . n . c . . . . n . c . . . n . . c . . . . . n . c . . . n . . c . . . . n . . c . . . n . . c . . . . n . c . . . n . . c . . . . n . . c . . . n . . c . . . . n . . c . . . n . . c . . . n . . c . . n .
+        . . . + c . + c + c c . . + c + c c . + c c + c c . . . + c + c c . + c c + c c . . + c c + c c . + c c + c . . . + c + c c . + c c + c c . . + c c + c c . + c c + c . . . + c c + c c . + c c + c . . + c c + c . + c
+        . . . . c . . c . n c . . . c . n c . . n c . n c . . . . c . n c . . n c . n c . . . n c . n c . . n c . n . . . . c . n c . . n c . n c . . . n c . n c . . n c . n . . . . n c . n c . . n c . n . . . n c . n . . n
+        . . . . + . . + . + + . . . + . + + . . + + . + + . . . . + . + + . . + + . + + . . . + + . + + . . + + . + . . . . + . + + . . + + . + + . . . + + . + + . . + + . + . . . . + + . + + . . + + . + . . . + + . + . . +
+      TXT
+    end
   end
 end
