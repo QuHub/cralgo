@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'bundler/setup'
 
-Bundler.require 
+Bundler.require
 
 load 'app.rb'
 

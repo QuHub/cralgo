@@ -49,6 +49,13 @@ describe '4gt10' do
 end
 
 __END__
+        c . . c . . . . . .
+        n . . c . . . . . .
+        + c . + c . . c . .
+        . c . . n . . c . .
+        . + c . + c c + c c
+        . . c . . n c . n c
+        . . + . . + + . + +
 
         c . . c . . . .
         n . . c . . . .

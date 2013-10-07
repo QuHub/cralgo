@@ -1,43 +1,7 @@
 module Minifiers
-  class Grid2x2
-    attr_accessor :grid, :mark, :modified
-    def initialize(grid)
-      self.grid = grid
-    end
-
-    def build_markers
-      self.mark = []
-      grid.width.times do |index|
-        token = ''
-        location = []
-        grid.col(index).each.with_index do |c,i|
-          if c != '.'
-            token <<  c
-            location << i
-          end
-        end
-        self.mark << [token.tr('+', ''), location]
-      end
-      self.mark
-    end
-
-    def replacements
-      {
-        cc: { cc: [                       ] , cn: ['c.'       ] , nc: ['.c'       ] , nn: ['..', 'n.', '.n', '..' ] },
-        cn: { cc: ['c.'                   ] , cn: [           ] , nc: ['c.', '.c' ] , nn: ['.n'                   ] },
-        nc: { cc: ['.c'                   ] , cn: ['c.', '.c' ] , nc: [           ] , nn: ['n.'                   ] },
-        nn: { cc: ['..', 'n.', '.n', '..' ] , cn: ['.n'       ] , nc: ['n.'       ] , nn: [                       ] },
-      }
-    end
-
-    def reduce
-      begin
-        build_markers
-        self.modified = false
-        process
-      end while modified
-    end
-
+  class Grid2x2 < Base
+    attr_accessor :grid, :mark, :modified, :output_size
+    private
     def process
       (0..mark.length-2).each do |index|
         m1 = mark[index]
@@ -55,6 +19,15 @@ module Minifiers
           return
         end
       end
+    end
+
+    def replacements
+      {
+        cc: { cc: [                       ] , cn: ['c.'       ] , nc: ['.c'       ] , nn: ['..', 'n.', '.n', '..' ] },
+        cn: { cc: ['c.'                   ] , cn: [           ] , nc: ['c.', '.c' ] , nn: ['.n'                   ] },
+        nc: { cc: ['.c'                   ] , cn: ['c.', '.c' ] , nc: [           ] , nn: ['n.'                   ] },
+        nn: { cc: ['..', 'n.', '.n', '..' ] , cn: ['.n'       ] , nc: ['n.'       ] , nn: [                       ] },
+      }
     end
 
     def replacement_column(positions, replacement)

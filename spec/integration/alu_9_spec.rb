@@ -26,6 +26,15 @@ describe 'alu_9' do
 
     it 'renders the quantum cascade' do
       cascade.render.inspect.should == strip_leading(<<-TXT)
+        n . . . . . . . . . . . . . c . . . . . . . . . . . c . . . . . . . . c . . .
+        n . . . . . . . . . . . . . c . . . . . . . . . . . n . . . . . . . . c . . .
+        + c . . . . . . c . . . . . + c . . . . . c . . . . + c . . . . c . . + c . .
+        . n . . . . . . c . . . . . . n . . . . . c . . . . . n . . . . c . . . n . .
+        . + c . . c . . + c . c . . . + c . . c . + c . c . . + c . c . + c . . + c .
+        . . n . . c . . . n . c . . . . n . . c . . n . c . . . n . c . . c . . . n .
+        . . + c c + c c . + c + c c . . + c c + c . + c + c . . + c + c . + c . . + c
+        . . . n c . n c . . c . n c . . . n c . n . . c . n . . . n . c . . c . . . n
+        . . . + + . + + . . + . + + . . . + + . + . . + . + . . . + . + . . + . . . +
       TXT
     end
   end
