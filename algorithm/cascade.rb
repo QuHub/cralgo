@@ -49,7 +49,12 @@ module Algorithm
         grid.replace_col(x,minterm)
       end
 
+      p grid
       grid
+    end
+
+    def minimize
+      Minifiers::Grid2x2.new(grid, outputs.size)
     end
 
     def process_column(x)

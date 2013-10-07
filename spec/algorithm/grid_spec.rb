@@ -103,4 +103,17 @@ describe Algorithm::Grid do
 
     end
   end
+
+  describe '.from_matrix' do
+    it 'creates a grid object from matrix' do
+      matrix =strip_leading(<<-MATRIX)
+        a b c d
+        e f g h
+        i j k l
+        m n o p
+      MATRIX
+      described_class.from_matrix(matrix).inspect.should == matrix
+    end
+  end
+
 end

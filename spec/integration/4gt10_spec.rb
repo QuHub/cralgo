@@ -33,5 +33,55 @@ describe '4gt10' do
         . . + . . + + . + +
       TXT
     end
+
+    it 'minimizes the quantum casacde' do
+      cascade.minimize.inspect.should == strip_leading(<<-TXT)
+        c . . c
+        n . . c
+        + c . .
+        . c . .
+        . + c .
+        . . c .
+        . . + +
+      TXT
+    end
   end
 end
+
+__END__
+
+        c . . c . . . .
+        n . . c . . . .
+        + c . + c . c .
+        . c . . n . c .
+        . + c . + c + c
+        . . c . . . . .
+        . . + . . + . +
+
+        c . . c . .
+        n . . c . .
+        + c . + c c
+        . c . . n c
+        . + c . . .
+        . . c . . .
+        . . + . + +
+
+        c . . c .
+        n . . c .
+        + c . + c
+        . c . . .
+        . + c . .
+        . . c . .
+        . . + . +
+
+        c . . c
+        n . . c
+        + c . .
+        . c . .
+        . + c .
+        . . c .
+        . . + +
+
+
+
+

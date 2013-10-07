@@ -48,3 +48,4 @@ def strip_leading(text)
     line.strip
   end.join("\n")
 end
+
