@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Minifiers::ControlInMiddle2x2 do
+describe Minifiers::CnotLink2x2 do
   let(:grid) { <<-GRID
     c . . c . . . .
     n . . c . . . .
