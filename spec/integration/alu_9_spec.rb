@@ -37,5 +37,19 @@ describe 'alu_9' do
         . . . + + . + + . . + . + + . . . + + . + . . + . + . . . + . + . . + . . . +
       TXT
     end
+
+    it 'minimizes the quantum casacde' do
+      cascade.minimize.inspect.should == strip_leading(<<-TXT)
+       n . . . . . c . . . . . . . . . c . . . . . . . . c . . .
+       n . . . . . c . . . . . . . . . n . . . . . . . . c . . .
+       + c c . . . + c . . . c . . . . + c . . . . c . . + c . .
+       . n c . . . . n . . . c . . . . . n . . . . c . . . n . .
+       . . + c . c . + c c . + c . c . . + c . c . + c . . + c .
+       . . . n . c . . n c . . n . c . . . n . c . . c . . . n .
+       . . . + c . . . . + c . + c + c . . + c + c . + c . . + c
+       . . . . c . . . . . n . . c . n . . . n . c . . c . . . n
+       . + . . + + . . + . + . . + . + . . . + . + . . + . . . +
+      TXT
+    end
   end
 end

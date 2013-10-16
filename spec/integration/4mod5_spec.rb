@@ -33,5 +33,17 @@ describe '4mod5' do
         . . + . . + . . + . . +
       TXT
     end
+
+    it 'minimizes the quantum casacde' do
+      cascade.minimize.inspect.should == strip_leading(<<-TXT)
+        n . . c . . c . . c . .
+        n . . c . . n . . c . .
+        + c . + c . + c . + c .
+        . n . . n . . c . . c .
+        . + c . + c . + c . + c
+        . . n . . c . . n . . c
+        . . + . . + . . + . . +
+      TXT
+    end
   end
 end
