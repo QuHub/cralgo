@@ -37,7 +37,7 @@ describe '4gt11' do
     it 'minimizes the quantum casacde' do
       cascade.minimize.inspect.should == strip_leading(<<-TXT)
         c
-        n
+        c
         .
         .
         .
