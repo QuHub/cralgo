@@ -4,7 +4,7 @@ def activation
   lambda {|arr| arr.map(&:activation)}
 end
 
-describe 'majority', :pending => true do
+describe 'majority' do
   describe 'read pla file' do
     let(:function) {Circuit::Pla.new('./spec/fixtures/majority.pla')}
     let(:algorithm) {Algorithm::Base.new(function)}

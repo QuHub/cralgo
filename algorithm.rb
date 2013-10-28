@@ -1,3 +1,4 @@
+load 'algorithm/expander.rb'
 load 'algorithm/base.rb'
 load 'algorithm/cascade.rb'
 load 'algorithm/grid.rb'

@@ -28,6 +28,7 @@ module Algorithm
 
     def initialize(function)
       self.function = function
+      p function
     end
 
     def encoded_inputs
@@ -54,7 +55,12 @@ module Algorithm
       sorted_list
     end
 
+  def encoding
+    lambda {|arr| arr.map(&:encoding)}
+  end
+
     def sorted_inputs
+      p encoded_inputs.map(&encoding)
       group_and_sort_inputs(encoded_inputs, 0).flatten(1)
     end
 

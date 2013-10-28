@@ -39,6 +39,7 @@ class Specs
       scope.watch( '^app/lib/.*'           ) { |m| run_last_test }
       scope.watch( '^spec/factories.*'     ) { |m| run_last_test }
       scope.watch( '^algorithm/.*'     ) { |m| run_last_test }
+      scope.watch( '^circuit/.*'     ) { |m| run_last_test }
     end
   end
 end
