@@ -57,11 +57,10 @@ module Algorithm
 
 			begin
 				reduced = false
-				[Minifiers::Grid2x2, Minifiers::CnotLink2x2].each do |klass|
+				[Minifiers::Grid2x2, Minifiers::Grid3x3, Minifiers::CnotLink2x2].each do |klass|
 					instance = klass.new(grid, outputs.size)
 					grid = instance.reduce
 					reduced |= instance.reduced
-					p reduced
 				end
 			end while reduced
 			grid
