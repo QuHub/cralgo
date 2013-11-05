@@ -10,6 +10,7 @@ module Minifiers
         if(m[0].last == m[2].last && m[1].last == m[3].last)
           key = m.map(&:first).join
           replacement_minterms = replacements[key]
+          raise "Undefined minterm sequence: #{key}" if replacement_minterms.nil?
           4.times.each {grid.delete_col(index)}
 
           replacement_minterms.reverse.each do |replacement|
@@ -25,7 +26,17 @@ module Minifiers
     def replacements
       {
         # skipping ancilla bit (c)
-        'nncncccn' => %w(.+.. c+.. .+.. .cn+),
+        'nncncccn' => %w(.+.. c+.. .+.. .cn+ .+.. c+.. .+..),
+        'nncncncn' => %w(.nn+),
+        'nncncncc' => %w(c.+. .nc+ c.+.),
+        'nccncccc' => %w(..+. c.+. ..+. .cc+ ..+. c.+. ..+.),
+        'nccncncn' => %w(c+.. .cn+ c+..),
+        'nccncccn' => %w(.cn+),
+        'nccccncc' => %w(c+.. .cc+ c+..),
+        'nccccncc' => %w(.cc+),
+        'nccccccn' => %w(c.+. .cc+ c.+.),
+        'nncccccc' => %w(.+.. c+.. .+.. .cc+ .+.. c+.. .+..),
+        'nncccncn' => %w(c.+. .nc+ c.+.),
       }
     end
 
