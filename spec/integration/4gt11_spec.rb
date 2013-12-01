@@ -34,6 +34,19 @@ describe '4gt11' do
       TXT
     end
 
+    it 'minimizes the quantum casacde, without Grid3x3' do
+      cascade.stub(:minimizers => [Minifiers::Grid2x2, Minifiers::CnotLink2x2])
+      cascade.minimize.inspect.should == strip_leading(<<-TXT)
+        c
+        c
+        .
+        .
+        .
+        .
+        +
+      TXT
+    end
+
     it 'minimizes the quantum casacde' do
       cascade.minimize.inspect.should == strip_leading(<<-TXT)
         c

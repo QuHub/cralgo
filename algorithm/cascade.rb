@@ -66,13 +66,17 @@ module Algorithm
 
 			begin
 				reduced = false
-				[Minifiers::Grid3x3].each do |klass|
+				minimizers.each do |klass|
 					instance = klass.new(grid, outputs.size)
 					grid = instance.reduce
 					reduced |= instance.reduced
 				end
 			end while reduced
 			grid
+    end
+
+    def minimizers
+      [Minifiers::Grid3x3, Minifiers::Grid2x2, Minifiers::CnotLink2x2]
     end
 
     def process_column(x)

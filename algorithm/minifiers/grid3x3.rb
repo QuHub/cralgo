@@ -10,7 +10,7 @@ module Minifiers
         if match?(m)
           key= m.map(&:first).join
           replacement_minterms = replacements[key]
-          raise "Undefined minterm sequence: #{key}" if replacement_minterms.nil?
+          next if replacement_minterms.nil?
           6.times {grid.delete_col(index) }
 
           replacement_minterms.reverse.each do |replacement|
