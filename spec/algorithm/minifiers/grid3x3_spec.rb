@@ -51,7 +51,6 @@ describe Minifiers::Grid3x3 do
     GRID
    }
   end
-=begin
 
   it_should_behave_like :grid3x3 do
     let(:grid) { <<-GRID
@@ -88,76 +87,300 @@ describe Minifiers::Grid3x3 do
 
   it_should_behave_like :grid3x3 do
     let(:grid) { <<-GRID
-      n . c .
-      n . n .
-      + c + c
-      . n . n
-      . + . +
+      n . . n . .
+      n . . c . .
+      + c . + c .
+      . n . . n .
+      . + c . + c
+      . . n . . n
+      . . + . . +
     GRID
     }
     let(:marker) {
       [
-        ['nn', [0,1,2]] ,
-        ['cn', [2,3,4]],
-        ['cn', [0,1,2]],
-        ['cn', [2,3,4]],
+        ["nn", [0, 1, 2]],
+        ["cn", [2, 3, 4]],
+        ["cn", [4, 5, 6]],
+        ["nc", [0, 1, 2]],
+        ["cn", [2, 3, 4]],
+        ["cn", [4, 5, 6]],
       ]
     }
     let(:result) { <<-GRID
-      .
-      n
-      .
-      n
-      +
+      . n
+      . .
+      . .
+      n .
+      + c
+      n .
+      . +
+    GRID
+   }
+  end
+
+
+  it_should_behave_like :grid3x3 do
+    let(:grid) { <<-GRID
+      n . . n . .
+      n . . c . .
+      + c . + c .
+      . c . . c .
+      . + c . + c
+      . . n . . c
+      . . + . . +
+    GRID
+    }
+    let(:marker) {
+      [
+        ["nn", [0, 1, 2]],
+        ["cc", [2, 3, 4]],
+        ["cn", [4, 5, 6]],
+        ["nc", [0, 1, 2]],
+        ["cc", [2, 3, 4]],
+        ["cc", [4, 5, 6]],
+      ]
+    }
+    let(:result) { <<-GRID
+      . . . . n
+      . c . . .
+      . . . . .
+      . . . c .
+      . . . + c
+      + + + c .
+      . . . . +
     GRID
    }
   end
 
   it_should_behave_like :grid3x3 do
     let(:grid) { <<-GRID
-      n . c .
-      n . n .
-      + c + c
-      . n . c
-      . + . +
+      n . . n . .
+      n . . c . .
+      + c . + c .
+      . c . . n .
+      . + c . + c
+      . . n . . n
+      . . + . . +
     GRID
     }
     let(:marker) {
       [
-        ['nn', [0,1,2]] ,
-        ['cn', [2,3,4]],
-        ['cn', [0,1,2]],
-        ['cc', [2,3,4]],
+        ["nn", [0, 1, 2]],
+        ["cc", [2, 3, 4]],
+        ["cn", [4, 5, 6]],
+        ["nc", [0, 1, 2]],
+        ["cn", [2, 3, 4]],
+        ["cn", [4, 5, 6]],
       ]
     }
     let(:result) { <<-GRID
-      c . c
-      . n .
-      . . .
-      + c +
-      . + .
-    GRID
-   }
-  end
-
-  it_should_behave_like :grid3x3 do
-    let(:grid) { <<-GRID
-      n . c .
+      . . . n
       c . c .
-      + c + c
-      . n . c
-      . + . +
-    GRID
-    }
-    let(:result) { <<-GRID
-     . c . . . c .
-     . . . c . . .
-     . . . . . . .
-     + + + c + + +
-     . . . + . . .
+      . . . .
+      + c + .
+      . + . c
+      . n . .
+      . . . +
     GRID
    }
   end
-=end
+
+  it_should_behave_like :grid3x3 do
+    let(:grid) { <<-GRID
+      n . . n . .
+      n . . c . .
+      + c . + c .
+      . c . . c .
+      . + c . + c
+      . . n . . n
+      . . + . . +
+    GRID
+    }
+    let(:marker) {
+      [
+        ["nn", [0, 1, 2]],
+        ["cc", [2, 3, 4]],
+        ["cn", [4, 5, 6]],
+        ["nc", [0, 1, 2]],
+        ["cc", [2, 3, 4]],
+        ["cn", [4, 5, 6]],
+      ]
+    }
+    let(:result) { <<-GRID
+      . n
+      . .
+      . .
+      c .
+      + c
+      n .
+      . +
+    GRID
+   }
+  end
+
+  it_should_behave_like :grid3x3 do
+    let(:grid) { <<-GRID
+      n . . n . .
+      n . . c . .
+      + c . + c .
+      . c . . n .
+      . + c . + c
+      . . c . . c
+      . . + . . +
+    GRID
+    }
+    let(:marker) {
+      [
+        ["nn", [0, 1, 2]],
+        ["cc", [2, 3, 4]],
+        ["cc", [4, 5, 6]],
+        ["nc", [0, 1, 2]],
+        ["cn", [2, 3, 4]],
+        ["cc", [4, 5, 6]],
+      ]
+    }
+    let(:result) { <<-GRID
+      . . . n
+      c . c .
+      . . . .
+      + c + .
+      . + . c
+      . c . .
+      . . . +
+    GRID
+   }
+  end
+
+  it_should_behave_like :grid3x3 do
+    let(:grid) { <<-GRID
+      n . . n . .
+      n . . c . .
+      + c . + c .
+      . c . . c .
+      . + c . + c
+      . . c . . c
+      . . + . . +
+    GRID
+    }
+    let(:marker) {
+      [
+        ["nn", [0, 1, 2]],
+        ["cc", [2, 3, 4]],
+        ["cc", [4, 5, 6]],
+        ["nc", [0, 1, 2]],
+        ["cc", [2, 3, 4]],
+        ["cc", [4, 5, 6]],
+      ]
+    }
+    let(:result) { <<-GRID
+      . n
+      . .
+      . .
+      c .
+      + c
+      c .
+      . +
+    GRID
+   }
+  end
+
+  it_should_behave_like :grid3x3 do
+    let(:grid) { <<-GRID
+      n . . n . .
+      n . . c . .
+      + c . + c .
+      . c . . c .
+      . + c . + c
+      . . c . . n
+      . . + . . +
+    GRID
+    }
+    let(:marker) {
+      [
+        ["nn", [0, 1, 2]],
+        ["cc", [2, 3, 4]],
+        ["cc", [4, 5, 6]],
+        ["nc", [0, 1, 2]],
+        ["cc", [2, 3, 4]],
+        ["cn", [4, 5, 6]],
+      ]
+    }
+    let(:result) { <<-GRID
+      . . . n
+      c . c .
+      . . . .
+      . c . .
+      . + . c
+      + c + .
+      . . . +
+    GRID
+   }
+  end
+
+  it_should_behave_like :grid3x3 do
+    let(:grid) { <<-GRID
+      n . . n . .
+      n . . c . .
+      + c . + c .
+      . n . . c .
+      . + c . + c
+      . . c . . c
+      . . + . . +
+    GRID
+    }
+    let(:marker) {
+      [
+        ["nn", [0, 1, 2]],
+        ["cn", [2, 3, 4]],
+        ["cc", [4, 5, 6]],
+        ["nc", [0, 1, 2]],
+        ["cc", [2, 3, 4]],
+        ["cc", [4, 5, 6]],
+      ]
+    }
+    let(:result) { <<-GRID
+      . . . . n
+      . c . . .
+      . . . . .
+      + + + c .
+      . . . + c
+      . . . c .
+      . . . . +
+    GRID
+   }
+  end
+
+  it_should_behave_like :grid3x3 do
+    let(:grid) { <<-GRID
+      n . . n . .
+      n . . c . .
+      + c . + c .
+      . n . . n .
+      . + c . + c
+      . . c . . n
+      . . + . . +
+    GRID
+    }
+    let(:marker) {
+      [
+        ["nn", [0, 1, 2]],
+        ["cn", [2, 3, 4]],
+        ["cc", [4, 5, 6]],
+        ["nc", [0, 1, 2]],
+        ["cn", [2, 3, 4]],
+        ["cn", [4, 5, 6]],
+      ]
+    }
+    let(:result) { <<-GRID
+      . . . n
+      c . c .
+      . . . .
+      . n . .
+      . + . c
+      + c + .
+      . . . +
+    GRID
+   }
+  end
 end
 

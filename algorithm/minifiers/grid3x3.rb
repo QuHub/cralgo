@@ -30,10 +30,34 @@ module Minifiers
     end
 
     def replacements
-      {
-        # skipping ancilla bit (c)
-        'nncncnnccccn' => %w(...+... .c.+... ...+... ...c+n. n...c.+),
-      }
+      @replacements ||= begin
+        negative_control = {
+          # skipping ancilla bit (c)
+          'nncncnnccccn' => %w(...+... .c.+... ...+... ...c+n. n...c.+),
+          'nncncnnccncn' => %w(...n+n. n...c.+),
+          'nncncnnccncc' => %w(.c...+. ...n+c. .c...+. n...c.+),
+          'nncccnnccccc' => %w(.....+. .c...+. .....+. ...c+c. n...c.+),
+          'nncccnnccncn' => %w(.c.+... ...c+n. .c.+... n...c.+),
+          'nncccnnccccn' => %w(...c+n. n...c.+),
+          'nnccccnccncc' => %w(.c.+... ...c+c. .c.+... n...c.+),
+          'nnccccnccccc' => %w(...c+c. n...c.+),
+          'nnccccnccccn' => %w(.c...+. ...c+c. .c...+. n...c.+),
+          'nncnccnccccc' => %w(...+... .c.+... ...+... ...c+c. n...c.+),
+          'nncnccnccncn' => %w(.c...+. ...n+c. .c...+. n...c.+),
+        }
+
+        positive_control = {}.tap do |hash|
+          negative_control.each do |k,v|
+            key = k.dup
+            key[0] = key[6] = 'c'
+            value = Marshal.load(Marshal.dump(v))
+            value.last[0] = 'c'
+            hash[key] = value
+          end
+        end
+
+        negative_control.merge(positive_control)
+      end
     end
 
     def replacement_column(positions, replacement)
