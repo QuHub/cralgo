@@ -3,18 +3,18 @@ module Minifiers
     attr_accessor :grid, :mark, :modified, :output_size
     private
     def process
-      (0..mark.length-4).each do |index|
-        # positions for 4 markers
-        m = [].tap {|a| 4.times.map {|i| a << mark[i] } }
+      (0..mark.length-6).each do |index|
+        # positions for 6 markers
+        m = [].tap {|a| 6.times.map {|i| a << mark[index+i] } }
 
-        if(m[0].last == m[2].last && m[1].last == m[3].last)
-          key = m.map(&:first).join
+        if match?(m)
+          key= m.map(&:first).join
           replacement_minterms = replacements[key]
           raise "Undefined minterm sequence: #{key}" if replacement_minterms.nil?
-          4.times.each {grid.delete_col(index)}
+          6.times {grid.delete_col(index) }
 
           replacement_minterms.reverse.each do |replacement|
-            positions = m[0].last[0..1] + m[1].last[1..2]
+            positions = m[0].last[0..2] + m[1].last[1..2] + m[2].last[1..2]
             grid.insert_col(index, replacement_column(positions, replacement))
           end
           self.modified = true
@@ -23,26 +23,22 @@ module Minifiers
       end
     end
 
+    def match?(m)
+      pos= m.map(&:last)
+      3.times.all? {|i| pos[i] == pos[3+i]} &&
+      (pos[0][2] == pos[1][0] && pos[1][2] == pos[2][0])
+    end
+
     def replacements
       {
         # skipping ancilla bit (c)
-        'nncncccn' => %w(.+.. c+.. .+.. .cn+ .+.. c+.. .+..),
-        'nncncncn' => %w(.nn+),
-        'nncncncc' => %w(c.+. .nc+ c.+.),
-        'nccncccc' => %w(..+. c.+. ..+. .cc+ ..+. c.+. ..+.),
-        'nccncncn' => %w(c+.. .cn+ c+..),
-        'nccncccn' => %w(.cn+),
-        'nccccncc' => %w(c+.. .cc+ c+..),
-        'nccccncc' => %w(.cc+),
-        'nccccccn' => %w(c.+. .cc+ c.+.),
-        'nncccccc' => %w(.+.. c+.. .+.. .cc+ .+.. c+.. .+..),
-        'nncccncn' => %w(c.+. .nc+ c.+.),
+        'nncncnnccccn' => %w(...+... .c.+... ...+... ...c+n. n...c.+),
       }
     end
 
     def replacement_column(positions, replacement)
       col = ['.'] * grid.height
-      4.times.each {|i| col[positions[i]] = replacement[i] }
+      7.times.each {|i| col[positions[i]] = replacement[i] }
       col
     end
   end
