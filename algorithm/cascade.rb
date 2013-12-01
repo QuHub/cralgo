@@ -43,9 +43,18 @@ module Algorithm
       end
 
       # now move the 'C' down to the added ancilla bit
+      history = [nil] * grid.height
       (0..grid.width-1).each do |x|
         minterm = grid.col(x).join('')
-        minterm = minterm.sub('Ca', '.c').tr('10a-','+.').downcase.split('')
+        minterm = minterm.sub('Ca', '.c').tr('10a-','+.').split('')
+        minterm = minterm.map.with_index do |x, i|
+          case x
+          when 'C' then history[i]
+          when 'c', 'n' then history[i] = x
+          else
+            x
+          end
+        end
         grid.replace_col(x,minterm)
       end
 
@@ -57,7 +66,7 @@ module Algorithm
 
 			begin
 				reduced = false
-				[Minifiers::Grid2x2, Minifiers::Grid3x3, Minifiers::CnotLink2x2].each do |klass|
+				[Minifiers::Grid3x3].each do |klass|
 					instance = klass.new(grid, outputs.size)
 					grid = instance.reduce
 					reduced |= instance.reduced

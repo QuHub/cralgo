@@ -22,9 +22,10 @@ describe '4mod5' do
     let(:outputs) {function.outputs}
     let(:cascade) {Algorithm::Cascade.new(inputs, outputs)}
 
+    # NOTE: the bit row 0, column 1 should be 'n'
     it 'renders the quantum cascade' do
       cascade.render.inspect.should == strip_leading(<<-TXT)
-        n . . c . . c . . c . .
+        n . . n . . c . . c . .
         n . . c . . n . . c . .
         + c . + c . + c . + c .
         . n . . n . . c . . c .
@@ -36,13 +37,13 @@ describe '4mod5' do
 
     it 'minimizes the quantum casacde' do
       cascade.minimize.inspect.should == strip_leading(<<-TXT)
-        n . . c . . c . . c . .
-        n . . c . . n . . c . .
-        + c . + c . + c . + c .
-        . n . . n . . c . . c .
-        . + c . + c . + c . + c
-        . . n . . c . . n . . c
-        . . + . . + . . + . . +
+       . . . n . . . . c
+       c . c . . c . . .
+       . . . . . . . . .
+       . n . . . . . c .
+       . + . c . . . + c
+       + c + . + + + c .
+       . . . + . . . . +
       TXT
     end
   end
